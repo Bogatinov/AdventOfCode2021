@@ -1,23 +1,22 @@
-﻿using System.Numerics;
-
-namespace AdventOfCode2021.Advents
+﻿namespace AdventOfCode2021.Advents
 {
     public class Day05 : DayAdvent<int>
     {
-        private readonly Dictionary<Complex, int> _map;
+        private readonly Dictionary<(int, int), int> _map;
 
         public Day05(string filePath) : base(filePath)
         {
-            _map = new Dictionary<Complex, int>();
+            _map = new();
         }
 
         public override int Solve1()
         {
-            foreach (var line in ReadLines())
+            foreach (var line in Lines)
             {
-                if (line.Start.X == line.End.X || line.Start.Y == line.End.Y)
+                var vector = Parse(line);
+                if (vector.X1 == vector.X2 || vector.Y1 == vector.Y2)
                 {
-                    SavePoints(line.Start, line.End);
+                    SavePoints(vector);
                 }
             }
 
@@ -26,46 +25,51 @@ namespace AdventOfCode2021.Advents
 
         public override int Solve2()
         {
-            foreach (var line in ReadLines())
+            foreach (var line in Lines)
             {
-                SavePoints(line.Start, line.End);
+                SavePoints(Parse(line));
             }
 
             return CountIntersections();
         }
 
-        IEnumerable<((int X, int Y) Start, (int X, int Y) End)> ReadLines()
+        (int X1, int Y1, int X2, int Y2) Parse(ReadOnlySpan<char> line)
         {
-            foreach (var line in Lines)
-            {
-                var vectors = line.Split(" -> ");
-                var vector1 = vectors[0].Split(",");
-                var vector2 = vectors[1].Split(",");
-                yield return ((int.Parse(vector1[0]), int.Parse(vector1[1])), (int.Parse(vector2[0]), int.Parse(vector2[1])));
-            }
+            var pointsIndex = line.IndexOf(" -> ");
+            var point1 = line.Slice(0, pointsIndex);
+            var coordinateIndex1 = point1.IndexOf(',');
+            var point2 = line.Slice(pointsIndex + 3);
+            var coordinateIndex2 = point2.IndexOf(',');
+
+            return (
+                int.Parse(point1.Slice(0, coordinateIndex1)), int.Parse(point1.Slice(coordinateIndex1 + 1)),
+                int.Parse(point2.Slice(0, coordinateIndex2)), int.Parse(point2.Slice(coordinateIndex2 + 1))
+                );
         }
 
-        private void SavePoints((int X, int Y) start, (int X, int Y) end)
+        private void SavePoints((int X1, int Y1, int X2, int Y2) line)
         {
-            var norm = Math.Max(Math.Abs(end.X - start.X), Math.Abs(end.Y - start.Y));
-            Complex vector = new((end.X - start.X) / norm, (end.Y - start.Y) / norm);
+            var stepX = GetStep(line.X1, line.X2);
+            var stepY = GetStep(line.Y1, line.Y2);
 
-            Complex point = new(start.X, start.Y);
-            Complex endPoint = new(end.X, end.Y);
+            var endX = GetEnd(line.X2, stepX);
+            var endY = GetEnd(line.Y2, stepY);
 
-            while (true)
+            for (int x = line.X1, y = line.Y1; x != endX && y != endY; x += stepX, y += stepY)
             {
-                if (_map.ContainsKey(point) == false)
-                {
-                    _map[point] = 0;
-                }
+                var coordinate = (x, y);
+                _map.TryGetValue(coordinate, out var intersection);
+                _map[coordinate] = intersection + 1;
+            }
 
-                _map[point]++;
+            int GetStep(int point1, int point2)
+            {
+                return point1 == point2 ? 0 : (point1 < point2 ? 1 : -1);
+            }
 
-                if (point == endPoint)
-                    break;
-
-                point += vector;
+            int GetEnd(int point2, int stepPoint)
+            {
+                return point2 + (stepPoint == 0 ? 1 : stepPoint);
             }
         }
 
