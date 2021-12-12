@@ -1,5 +1,4 @@
 ﻿using AdventOfCode2021.Advents;
-using Xunit;
 
 namespace AdventOfCode2021.Tests
 {
@@ -9,21 +8,9 @@ namespace AdventOfCode2021.Tests
         {
         }
 
-        [Fact(DisplayName = "Day10 Solve01")]
-        public override void Solve1()
-        {
-            var result = Day.Solve1();
+        protected override long Expected1 => 193275;
 
-            Assert.Equal(193275, result);
-        }
-
-        [Fact(DisplayName = "Day10 Solve02")]
-        public override void Solve2()
-        {
-            var result = Day.Solve2();
-
-            Assert.Equal(2429644557, result);
-        }
+        protected override long Expected2 => 2429644557;
     }
 
     public class Day10TrainTests : DayAdventFixture<long>
@@ -32,20 +19,8 @@ namespace AdventOfCode2021.Tests
         {
         }
 
-        [Fact(DisplayName = "Day10 Train Solve01")]
-        public override void Solve1()
-        {
-            var result = Day.Solve1();
+        protected override long Expected1 => 26397;
 
-            Assert.Equal(26397, result);
-        }
-
-        [Fact(DisplayName = "Day10 Train Solve02")]
-        public override void Solve2()
-        {
-            var result = Day.Solve2();
-
-            Assert.Equal(288957, result);
-        }
+        protected override long Expected2 => 288957;
     }
 }

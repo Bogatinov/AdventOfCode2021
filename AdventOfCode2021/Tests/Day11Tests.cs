@@ -9,21 +9,9 @@ namespace AdventOfCode2021.Tests
         {
         }
 
-        [Fact(DisplayName = "Day11 Solve01")]
-        public override void Solve1()
-        {
-            var result = Day.Solve1();
+        protected override int Expected1 => 1620;
 
-            Assert.Equal(1620, result);
-        }
-
-        [Fact(DisplayName = "Day11 Solve02")]
-        public override void Solve2()
-        {
-            var result = Day.Solve2();
-
-            Assert.Equal(371, result);
-        }
+        protected override int Expected2 => 371;
     }
 
     public class Day11TrainTests : DayAdventFixture<int>
@@ -32,20 +20,8 @@ namespace AdventOfCode2021.Tests
         {
         }
 
-        [Fact(DisplayName = "Day11 Train Solve01")]
-        public override void Solve1()
-        {
-            var result = Day.Solve1();
+        protected override int Expected1 => 1656;
 
-            Assert.Equal(1656, result);
-        }
-
-        [Fact(DisplayName = "Day11 Train Solve02")]
-        public override void Solve2()
-        {
-            var result = Day.Solve2();
-
-            Assert.Equal(195, result);
-        }
+        protected override int Expected2 => 195;
     }
 }
