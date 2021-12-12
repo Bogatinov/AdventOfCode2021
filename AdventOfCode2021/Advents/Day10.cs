@@ -18,10 +18,12 @@
         public override long Solve1()
         {
             long result = 0;
+            var stack = new Stack<char>();
 
             foreach (var line in Lines)
             {
-                var stack = new Stack<char>();
+                stack.Clear();
+
                 foreach (var bracket in line)
                 {
                     if (bracket is '{' or '[' or '<' or '(')
@@ -53,10 +55,12 @@
         public override long Solve2()
         {
             var scores = new List<long>();
+            var stack = new Stack<char>();
 
             foreach (var line in Lines)
             {
-                var stack = new Stack<char>();
+                stack.Clear();
+
                 int i;
                 for (i = 0; i < line.Length; i++)
                 {

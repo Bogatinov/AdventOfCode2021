@@ -45,11 +45,13 @@
             var offsetX = new[] { -1, 0, 1, 0 };
             var offsetY = new[] { 0, 1, 0, -1 };
             var basins = new List<int>();
+            var queue = new Queue<(int X, int Y)>();
+
             for (int x = 0; x < matrix.Length; x++)
             {
                 for (int y = 0; y < matrix[x].Length; y++)
                 {
-                    var queue = new Queue<(int X, int Y)>();
+                    queue.Clear();
                     queue.Enqueue((x, y));
 
                     int size = 0;

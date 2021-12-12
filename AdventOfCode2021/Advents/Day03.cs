@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AdventOfCode2021.Advents
+﻿namespace AdventOfCode2021.Advents
 {
     public class Day03 : DayAdvent<int>
     {
