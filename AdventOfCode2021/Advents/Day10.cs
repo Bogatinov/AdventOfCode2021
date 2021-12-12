@@ -39,7 +39,8 @@
                             ')' => 3,
                             ']' => 57,
                             '}' => 1197,
-                            '>' => 25137
+                            '>' => 25137,
+                            _ => throw new ArgumentOutOfRangeException()
                         };
                         break;
                     }
@@ -84,7 +85,8 @@
                             '(' => 1,
                             '[' => 2,
                             '{' => 3,
-                            '<' => 4
+                            '<' => 4,
+                            _ => throw new ArgumentOutOfRangeException()
                         };
                     }
                     scores.Add(score);

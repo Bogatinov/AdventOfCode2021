@@ -16,12 +16,12 @@ Advent of Code is an Advent calendar of small programming puzzles for a variety 
 # Running tests
 Navigate to _AdventOfCode2021.csproj_ directory and execute the [Test command](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test)
 ```ps
-dotnet test
+dotnet test --configuration Release
 ```
 
 # Running benchmarks
 Navigate to _AdventOfCode2021.csproj_ directory and execute the [Run command](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-run)
 ```ps
-dotnet run
+dotnet run --configuration Release
 ```
 Then choose the benchmarks to run, following the [BenchmarkDotNet official documentation](https://benchmarkdotnet.org/articles/guides/how-to-run.html#benchmarkswitcher)
