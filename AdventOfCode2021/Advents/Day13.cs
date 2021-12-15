@@ -4,7 +4,7 @@ namespace AdventOfCode2021.Advents
 {
     public class Day13 : DayAdvent<string>
     {
-        private HashSet<(int X, int Y)> _coordinates;
+        private readonly HashSet<Point> _coordinates;
         private readonly List<(char Direction, int Axis)> _steps;
 
         public Day13(string filePath) : base(filePath)
@@ -28,7 +28,7 @@ namespace AdventOfCode2021.Advents
                     var split = line.IndexOf(',');
                     int x = int.Parse(line[..split]);
                     int y = int.Parse(line[(split + 1)..]);
-                    _coordinates.Add((x, y));
+                    _coordinates.Add(new Point(x, y));
                 }
             }
         }
@@ -36,15 +36,29 @@ namespace AdventOfCode2021.Advents
         public override string Solve1()
         {
             var (direction, axis) = _steps[0];
+            HashSet<Point> result = new(_coordinates.Count / 2);
+            foreach (var point in _coordinates)
+            {
+                result.Add(point.MoveBy(direction, axis));
+            }
 
-            return Fold(direction, axis).Count.ToString();
+            _coordinates.Clear();
+            return result.Count.ToString();
         }
 
         public override string Solve2()
         {
+            HashSet<Point> coordinates = new(_coordinates.Count / 2);
             foreach (var (direction, axis) in _steps)
             {
-                _coordinates = Fold(direction, axis);
+                foreach (var point in _coordinates)
+                {
+                    coordinates.Add(point.MoveBy(direction, axis));
+                }
+
+                _coordinates.Clear();
+                _coordinates.UnionWith(coordinates);
+                coordinates.Clear();
             }
 
             var (height, width) = FindMax();
@@ -54,7 +68,7 @@ namespace AdventOfCode2021.Advents
             {
                 for (int j = 0; j <= width; j++)
                 {
-                    if (_coordinates.Contains((j, i)))
+                    if (_coordinates.Contains(new Point(j, i)))
                     {
                         result.Append('#');
                     }
@@ -66,6 +80,7 @@ namespace AdventOfCode2021.Advents
                 result.AppendLine();
             }
 
+            _coordinates.Clear();
             return result.ToString();
         }
 
@@ -73,44 +88,49 @@ namespace AdventOfCode2021.Advents
         {
             int height = 0;
             int width = 0;
-            foreach (var (x, y) in _coordinates)
+            foreach (var point in _coordinates)
             {
-                if (y > height)
+                if (point.Y > height)
                 {
-                    height = y;
+                    height = point.Y;
                 }
 
-                if (x > width)
+                if (point.X > width)
                 {
-                    width = x;
+                    width = point.X;
                 }
             }
 
             return (height, width);
         }
+    }
 
-        private HashSet<(int, int)> Fold(char direction, int axis)
+    public class Point : IEquatable<Point>
+    {
+        public Point(int x, int y)
         {
-            HashSet<(int, int)> result = new();
-
-            if (direction == 'x')
-            {
-                foreach (var (x, y) in _coordinates)
-                {
-                    result.Add((NewCoordinate(x, axis), y));
-                }
-            }
-            else
-            {
-                foreach (var (x, y) in _coordinates)
-                {
-                    result.Add((x, NewCoordinate(y, axis)));
-                }
-            }
-
-            return result;
+            X = x;
+            Y = y;
         }
 
-        private static int NewCoordinate(int coordinate, int axis) => coordinate < axis ? coordinate : 2 * axis - coordinate;
+        public Point MoveBy(char direction, int axis)
+        {
+            return direction == 'x' ? new Point(GetCoordinate(X, axis), Y) : new Point(X, GetCoordinate(Y, axis));
+        }
+
+        private static int GetCoordinate(int coordinate, int axis) => coordinate < axis ? coordinate : 2 * axis - coordinate;
+
+        public int X;
+        public int Y;
+
+        public bool Equals(Point other)
+        {
+            return X == other.X && Y == other.Y;
+        }
+
+        public override int GetHashCode()
+        {
+            return X.GetHashCode() ^ Y.GetHashCode();
+        }
     }
 }
