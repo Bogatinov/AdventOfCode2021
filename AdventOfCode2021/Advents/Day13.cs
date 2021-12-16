@@ -103,34 +103,34 @@ namespace AdventOfCode2021.Advents
 
             return (height, width);
         }
-    }
 
-    public class Point : IEquatable<Point>
-    {
-        public Point(int x, int y)
+        public class Point : IEquatable<Point>
         {
-            X = x;
-            Y = y;
-        }
+            public Point(int x, int y)
+            {
+                X = x;
+                Y = y;
+            }
 
-        public Point MoveBy(char direction, int axis)
-        {
-            return direction == 'x' ? new Point(GetCoordinate(X, axis), Y) : new Point(X, GetCoordinate(Y, axis));
-        }
+            public Point MoveBy(char direction, int axis)
+            {
+                return direction == 'x' ? new Point(GetCoordinate(X, axis), Y) : new Point(X, GetCoordinate(Y, axis));
+            }
 
-        private static int GetCoordinate(int coordinate, int axis) => coordinate < axis ? coordinate : 2 * axis - coordinate;
+            private static int GetCoordinate(int coordinate, int axis) => coordinate < axis ? coordinate : 2 * axis - coordinate;
 
-        public int X;
-        public int Y;
+            public int X;
+            public int Y;
 
-        public bool Equals(Point other)
-        {
-            return X == other.X && Y == other.Y;
-        }
+            public bool Equals(Point other)
+            {
+                return X == other.X && Y == other.Y;
+            }
 
-        public override int GetHashCode()
-        {
-            return X.GetHashCode() ^ Y.GetHashCode();
+            public override int GetHashCode()
+            {
+                return X.GetHashCode() ^ Y.GetHashCode();
+            }
         }
     }
 }
